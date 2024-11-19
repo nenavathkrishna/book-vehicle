@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const db = require('./models/index');
 
-const PORT = process.env.PORT 
+const PORT = 3000
 
 console.log("what is Port", process.env.PORT)
 
