@@ -35,7 +35,7 @@ const VehicleBookingForm = () => {
         .get(`http://localhost:3000/api/vehicle/models?type=${selectedVehicleType}`)
         .then((response) => {
           setVehicleModels(response.data);
-          setSelectedModel(null); // Reset selection
+          setSelectedModel(null);
         });
     }
   }, [selectedVehicleType]);
@@ -69,11 +69,12 @@ const VehicleBookingForm = () => {
       })
       .catch((error) => {
         if (error.response && error.response.status === 400) {
-          // Show popup or alert for conflicting booking
           alert(error.response.data.error);
+          setStep(step => step - 1);
         } else {
           console.error("Error:", error.message);
           alert("An unexpected error occurred. Please try again.");
+
         }
       });
   };
@@ -82,7 +83,7 @@ const VehicleBookingForm = () => {
     if (step === 1) {
       if (!firstName || !lastName) {
           setError("Please fill out both first and last name.");
-          return; // Prevent advancing to next step
+          return;
       }
   } else if (step === 2) {
       if (!numWheels) {
@@ -171,9 +172,15 @@ const VehicleBookingForm = () => {
               </label>
           </div>
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-          <button type="button" onClick={handleNextStep}
-          className="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          <button type="button" 
+          onClick={()=>setStep((step)=> step -1)}
+          className="mt-4 mr-1 w-1/3 bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          >Back</button>
+          <button type="button" 
+          onClick={handleNextStep}
+          className="mt-4 w-1/3 bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
           >Next</button>
+
         </div>
       )}
 
@@ -195,8 +202,13 @@ const VehicleBookingForm = () => {
             ))}
           </div>
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-          <button type="button" onClick={handleNextStep}
-          className="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          <button type="button" 
+          onClick={()=>setStep((step)=> step -1)}
+          className="mt-4 mr-1 w-1/3 bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          >Back</button>
+          <button type="button" 
+          onClick={handleNextStep}
+          className="mt-4 w-1/3 bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
           >Next</button>
         </div>
       )}
@@ -220,10 +232,13 @@ const VehicleBookingForm = () => {
             ))}
           </div>
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-          <button 
-          type="button" 
+          <button type="button" 
+          onClick={()=>setStep((step)=> step -1)}
+          className="mt-4 mr-1 w-1/3 bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          >Back</button>
+          <button type="button" 
           onClick={handleNextStep}
-          className="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="mt-4 w-1/3 bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
           >Next</button>
         </div>
       )}
@@ -255,8 +270,12 @@ const VehicleBookingForm = () => {
           </div>
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
           <button type="button" 
+          onClick={()=>setStep((step)=> step -1)}
+          className="mt-4 mr-1 w-1/3 bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          >Back</button>
+          <button type="button" 
           onClick={handleNextStep}
-          className="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="mt-4 w-1/3 bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
           >Next</button>
         </div>
       )}
@@ -294,77 +313,3 @@ const VehicleBookingForm = () => {
 export default VehicleBookingForm;
 
 
-// <div className="flex items-center justify-center min-h-screen bg-gray-100">
-//       <form
-//         onSubmit={handleSubmit}
-//         className="bg-white p-6 rounded-lg shadow-md w-full max-w-md space-y-6"
-//       >
-//         {step === 1 && (
-//           <div>
-//             <h2 className="text-xl font-semibold text-center mb-4">What is your name?</h2>
-//             <div className="space-y-4">
-//               <input
-//                 type="text"
-//                 placeholder="First Name"
-//                 value={firstName}
-//                 onChange={(e) => setFirstName(e.target.value)}
-//                 className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-//                 required
-//               />
-//               <input
-//                 type="text"
-//                 placeholder="Last Name"
-//                 value={lastName}
-//                 onChange={(e) => setLastName(e.target.value)}
-//                 className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-//                 required
-//               />
-//             </div>
-//             <button
-//               type="button"
-//               onClick={handleNextStep}
-//               className="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-//             >
-//               Next
-//             </button>
-//           </div>
-//         )}
-
-//         {step === 2 && (
-//           <div>
-//             <h2 className="text-xl font-semibold text-center mb-4">Number of Wheels</h2>
-//             <div className="space-y-2">
-//               <label className="flex items-center space-x-2">
-//                 <input
-//                   type="radio"
-//                   name="numWheels"
-//                   value="2"
-//                   onChange={() => setNumWheels(2)}
-//                   className="form-radio"
-//                 />
-//                 <span>2 Wheels</span>
-//               </label>
-//               <label className="flex items-center space-x-2">
-//                 <input
-//                   type="radio"
-//                   name="numWheels"
-//                   value="4"
-//                   onChange={() => setNumWheels(4)}
-//                   className="form-radio"
-//                 />
-//                 <span>4 Wheels</span>
-//               </label>
-//             </div>
-//             <button
-//               type="button"
-//               onClick={handleNextStep}
-//               className="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-//             >
-//               Next
-//             </button>
-//           </div>
-//         )}
-
-//         {/* Repeat similar structure for other steps */}
-//       </form>
-//     </div>
